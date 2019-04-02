@@ -52,14 +52,14 @@ local function run(cmd)
                 end
             end
         end
-    elseif cmd=="R" then -- get 2 value from stack and remove the [p1] instruction(s) of todo [p2] times
+    elseif cmd=="R" then -- get 2 value from stack and remove the [p1] instruction of todo [p2] times
         local p1 = whenever.stack[#whenever.stack] table.remove(whenever.stack,#whenever.stack)
         local p2 = whenever.stack[#whenever.stack] table.remove(whenever.stack,#whenever.stack)
         p2 = tonumber(p2)
         for j=1,p2 do
             for i,v in ipairs(whenever.todo) do
                 if v[1]==p1 then
-                    whenever.todo[i]={0,{0}}
+                    whenever.todo[i]={0,{0}} -- spawn a zombi
                     break
                 end      
             end

@@ -50,3 +50,38 @@ local fibo =
     {"end",{"end",0,"fibo","N","E","H","numA","N","numA","R","numB","N","numB","R","P"}}
 }
 test(fibo,"1 1 2 3 5 8 13 21 34 55 89 end")
+
+
+-- Some weird example
+whenever.print = io.write
+
+-- test same names
+local name =
+{
+    {"asd",{1,"P"}},
+    {"asd",{2,"P"}},
+    {"asd",{3,"P"}},
+    {"multiple",{2,"asd","I"}},
+}
+whenever.start(name) print(" it should have 3x '1','2' and '3' in random order\n")
+
+-- zombies: The {0,{0}} line in the todolist is the zombi, every removal ("R") spawn a zombi.
+local zombi =
+{
+    {"alive",{1}},
+    {"multiple and kill",{998,"alive","I",999,"alive","R"}},
+    {"print out the number of zombies",{" ",0,"N","P"," "}},
+    {"halt the program when noone left",{1,"alive","N",0,"E","H",0,"D","N","E","H","print out the number of zombies","R"}}
+}
+whenever.start(zombi) print("If u aren't extremly unlucky, it should write out some nonzero postivie integers too.")
+
+-- test same names2
+local name =
+{
+    {"asd",{1,"P"}},
+    {"asd",{2,"P"}},
+    {"asd",{3,"P"}},
+    {"asd",{3,"asd","R"}}, -- remove 3 "asd"
+    {"multiple",{9,"asd","I"}},
+}
+whenever.start(name) print(" It should write out less than 30 char.\n")

@@ -1,6 +1,8 @@
 local whenever = {}
 whenever.print = io.write
+whenever.getLine = io.read
 whenever.maxRound = nil
+whenever.debug = false
 
 local function list2todo(id)
     table.insert(whenever.todo,{whenever.list[id][1],whenever.list[id][2]})
@@ -68,6 +70,14 @@ local function run(cmd)
         local p1 = whenever.stack[#whenever.stack] table.remove(whenever.stack,#whenever.stack)
         table.insert(whenever.stack,p1)
         table.insert(whenever.stack,p1)
+    elseif cmd=="L" then -- get a line from user, and push to sctack
+        local p1 = whenever.getLine()
+        table.insert(whenever.stack,p1)
+    elseif cmd=="S" then -- swap the last 2 value in stack
+        local p1 = whenever.stack[#whenever.stack] table.remove(whenever.stack,#whenever.stack)
+        local p2 = whenever.stack[#whenever.stack] table.remove(whenever.stack,#whenever.stack)
+        table.insert(whenever.stack,p1)
+        table.insert(whenever.stack,p2)
     else
         table.insert(whenever.stack,cmd)
     end
@@ -83,19 +93,33 @@ function whenever.start(list)
 
     while #whenever.todo>0 do
         local r = math.random(1,#whenever.todo)
-        --io.write("\n"..whenever.todo[r][1]..":")
+        if whenever.debug then io.write("\n"..whenever.todo[r][1]..":") end
 
         -- run every command
         whenever.stack = {}
         for i,v in ipairs(whenever.todo[r][2]) do
-            if not run(v) then break end
+            local ok = false
+            local function wrapRun()
+                ok = run(v)
+            end
+            local function wrapErr()
+                io.write(whenever.todo[r][1].."["..i.."] = "..v.." | stack = [")
+                for i,v in ipairs(whenever.stack) do
+                    io.write(v..", ")
+                end
+                io.write("]\n")
+                os.exit()
+            end
+            xpcall(wrapRun,wrapErr)
+            if not ok then break end
         end
 
         if #whenever.stack==0 or whenever.stack[#whenever.stack]==0 then
             table.remove(whenever.todo,r)
         end
 
-        --io.write(":") for i,v in ipairs(whenever.todo) do io.write(" "..v[1]) end
+        if whenever.debug then io.write(":") for i,v in ipairs(whenever.todo) do io.write(" "..v[1]) end end
+
         if whenever.maxRound then
             if whenever.maxRound==0 then 
                 whenever.maxRound=nil

@@ -19,7 +19,7 @@ end
 -- test t1
 local t1 = 
 {
-    {3,{"",3,"d","N","G","H","d","N","D","d","R"," ",3,"P"}},
+    {3,{"3 ",3,"d","N","G","H","d","N","D","d","R","S","P"}},
     {1,{"1 ","P"}},
     {2,{" ",2,0,1,"N","E","H",3,"d","I","P"}},
     {"d",{1}},
@@ -44,10 +44,10 @@ local fibo =
     -- 1 1
     {"numA",{1}},
     {"numB",{1}},
-    --   if !(numaA<X) then halt, die else print numaA,  c = numB, numB+=numA,           numaA-=numaA=0,      numA=c,   stay alive
-    {"fibo",{"numA","N",99,"G","H"," ","numA","N","P","numB","N","numA","N","numB","I","numA","N","numA","R","numA","I",1}},
-    --   if fibo exist then halt, saty alive else remove all numA and numB, print end
-    {"end",{"end",0,"fibo","N","E","H","numA","N","numA","R","numB","N","numB","R","P"}}
+    --       if !(numaA<X) then halt, die else print numA,       c = numB,      numB+=numA,                numA-=numA=0,              numA=c,    stay alive
+    {"fibo",{"numA","N",99,"G","H",       " ","numA","N","P",    "numB","N",    "numA","N","numB","I",    "numA","D","N","S","R",    "numA","I",    1}},
+    --      if fibo exist then halt, saty alive else remove all numA     and numB,                   print end
+    {"end",{"end",0,"fibo","N","E","H",              "numA","D","N","S","R","numB","D","N","S","R",    "P"}}
 }
 test(fibo,"1 1 2 3 5 8 13 21 34 55 89 end")
 
@@ -85,3 +85,15 @@ local name =
     {"multiple",{9,"asd","I"}},
 }
 whenever.start(name) print(" It should write out less than 30 char.\n")
+
+-- Moooooore example
+
+-- divide: 72/8=9
+local div =
+{
+    {"div start",{"num","D","N","S","R",    "div","D","N","S","R",    "ret","D","N","S","R",   72,"num","I",    8,"div","I"}},
+    {"num",{"","div start","N",0,"E","H",    "","div","N","num","N","G","H",    1,"ret","I",    "div","N","num","R",1}}, -- num%div != 0
+    {"div",{"","div start","N",0,"E","H",    "","div","N","num","N","E","H",    1,"ret","I",    "div","N","num","R",1}}, -- num%div == 0
+    {"ret",{"","div start","N",0,"E","H",    "","num","N","div","N","G","H",    "ret","N","P",    "num","D","N","S","R",    "div","D","N","S","R",    "ret","D","N","S","R"}},
+}
+test(div,"9")
